@@ -37,6 +37,7 @@ class FetchNewsCommand extends Command
         $newYorkTimesApiKey = getenv('NYK_API_KEY');
         $GNewsApiKey = getenv('GNEWS_API_KEY');
         
+        $this->fetchSources();
         // Array of API sources and their respective endpoints and parameters
         $sources = [
             'newsapi' => [

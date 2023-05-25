@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8000:8000'
-    volumes:
-      - .:/var/www/html
+    # volumes:
+    #   - .:/var/www/html
     environment:
       - DB_CONNECTION=pgsql
       - DB_HOST=db

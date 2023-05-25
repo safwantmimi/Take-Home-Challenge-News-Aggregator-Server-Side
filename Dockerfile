@@ -18,13 +18,17 @@ COPY composer.lock composer.json /var/www/html/
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install application dependencies
-RUN composer install --no-scripts --no-autoloader
+RUN composer install --no-scripts
 
 # Copy the application code
-COPY . /var/www/html
+COPY --chown=www-data:www-data . /var/www/html
+
 
 # Generate the optimized autoloader
 RUN composer dump-autoload --optimize
+
+# Update the application
+RUN composer update --no-scripts
 
 # Set the appropriate permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
@@ -32,21 +36,3 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Expose port 9000 and start the PHP-FPM server
 EXPOSE 9000
 CMD ["php-fpm"]
-
-
-# Scheduled news fetching
-
-# Install cron
-RUN apt-get update && apt-get -y install cron
-
-# Add crontab file
-ADD crontab /etc/cron.d/laravel-scheduler
-
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
-# Apply cron job
-RUN crontab /etc/cron.d/laravel-scheduler
-
-# Run the command on container startup
-CMD cron && docker-php-entrypoint php-fpm
