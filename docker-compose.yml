@@ -1,0 +1,40 @@
+#Author: Safouan (find me on linkedIn : "https://www.linkedin.com/in/safwantmimi")
+
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=news
+      - DB_USERNAME=sfn
+      - DB_PASSWORD=safwan1559
+    depends_on:
+      - db
+    networks:
+      - myapp_network
+    command: >
+      sh -c "php artisan migrate --force && php artisan news:fetch-news && php artisan serve --host=0.0.0.0 --port=8000"
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=news
+      - POSTGRES_USER=sfn
+      - POSTGRES_PASSWORD=safwan1559
+    networks:
+      - myapp_network
+
+networks:
+  myapp_network:
+
+volumes:
+  myapp_volume:
