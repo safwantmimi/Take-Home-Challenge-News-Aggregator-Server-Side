@@ -16,7 +16,7 @@ services:
       - DB_PORT=5432
       - DB_DATABASE=news
       - DB_USERNAME=sfn
-      - DB_PASSWORD=safwan1559
+      - DB_PASSWORD=safouan_tmimi
     depends_on:
       - db
     networks:
@@ -29,7 +29,10 @@ services:
     environment:
       - POSTGRES_DB=news
       - POSTGRES_USER=sfn
-      - POSTGRES_PASSWORD=safwan1559
+      - POSTGRES_PASSWORD=safouan_tmimi
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     networks:
       - myapp_network
 
@@ -37,4 +40,4 @@ networks:
   myapp_network:
 
 volumes:
-  myapp_volume:
+  db_data:

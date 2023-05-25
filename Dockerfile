@@ -1,5 +1,5 @@
-# Use the official PHP 8 base image
-FROM php:8.1-fpm
+# Use the official PHP 8.1 base image
+FROM php:8.2.0-fpm
 
 # Set the working directory in the container
 WORKDIR /var/www/html
@@ -34,8 +34,7 @@ EXPOSE 9000
 CMD ["php-fpm"]
 
 
-#Scheduled news fetching .. 
-
+# Scheduled news fetching
 
 # Install cron
 RUN apt-get update && apt-get -y install cron
