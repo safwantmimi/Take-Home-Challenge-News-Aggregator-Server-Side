@@ -115,7 +115,7 @@ trait NewsTrait
         }
     
         // Get the filtered articles
-        $articles = $query->orderByDesc('published_at')->get();
+        $articles = $query->orderByDesc('id')->get();
     
         // Retrieve 3 similar articles for each article based on author or source
         $relatedArticles = [];
@@ -176,8 +176,8 @@ trait NewsTrait
 
         // Fetch 50 news articles from the beginning of the current week
         $query = Article::join('sources', 'articles.source_id', '=', 'sources.id')
-            ->join('categories', 'sources.category_id', '=', 'categories.id')
-            ->where('articles.created_at', '>=', $startOfWeek)
+            ->where('articles.published_at', '>=', $startOfWeek)
+            ->whereNotNull('image')
             ->inRandomOrder()
             ->limit(6)
             ->get();

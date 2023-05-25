@@ -17,8 +17,8 @@ COPY composer.lock composer.json /var/www/html/
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install application dependencies
-RUN composer install --no-scripts
+# Install application dependencies (--no-autoloader might be a probelm on docker desktop with windows)
+RUN composer install --no-scripts --no-autoloader
 
 # Copy the application code
 COPY --chown=www-data:www-data . /var/www/html
